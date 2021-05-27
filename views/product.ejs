@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Product</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <%- include('./header.ejs') %>
+    <center>
+        <br><br>
+        <a href="#addProduct"><button>Add Product</button></a>
+    </center>
+    <% if (data.length > 0) { %>
+    <center style="margin-top:35px;">
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
+                    <th>Category Name</th>
+                    <th>Category ID</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i= 0; i < data.length;i++) { %>
+                <tr>
+                    <td><%= (i+1) %></td>
+                    <td><%= data[i].PID %></td>
+                    <td><%= data[i].PName %></td>
+                    <td><%= data[i].CName %></td>
+                    <td><%= data[i].CID %></td>
+                    <td><button><a href="#updateProduct"
+                                onclick='update(<%= data[i].PID%> ,"<%=data[i].PName %>")'>Update</a></button></td>
+                    <td><button><a href="/delete-Product?pId=<%= data[i].PID%>">Delete</a></button></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </center>
+    <% } else { %>
+    <h1>No data Found</h1>
+    <% } %>
+
+    <div id="addProduct" class="overlay">
+        <div class="popup">
+            <h2>Add Product</h2>
+            <hr>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <form action="/add-product" method="POST" name="addProduct">
+                    <label for="cateogry Name">Category Name</label>
+                    <select name="categoryId" id="categoryId">
+                        <% for (let i= 0; i < cData.length;i++) { %>
+                        <option value="<%= cData[i].CID %>"><%= cData[i].CName %></option>
+                        <% } %>
+                    </select>
+                    <br><br>
+                    <label for="cateogry Name">Product Name</label>
+                    <input type="text" name="productName" required>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="updateProduct" class="overlay">
+        <div class="popup">
+            <h2>Update Product</h2>
+            <hr>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <form action="/update-product" method="POST" name="addProduct">
+                    <label for="cateogry Name">Product Name</label>
+                    <input id='uCId' type="text" name="productId" style="display: none;" required>
+                    <input id="uCName" type="text" name="productName" required>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function update(id, name) {
+            document.getElementById("uCName").value = name;
+            document.getElementById("uCId").value = id;
+        }
+    </script>
+</body>
+
+</html>

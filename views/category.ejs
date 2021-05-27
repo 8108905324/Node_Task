@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/main.css">
+    <title>Product</title>
+    <style>
+    </style>
+</head>
+
+<body>
+    <%- include('./header.ejs') %>
+    <center>
+        <br><br>
+        <a href="#addCategory"><button>Add Category</button></a>
+    </center>
+    <% if (data.length > 0) { %>
+    <center style="margin-top:35px;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Index</th>
+                    <th>Category ID</th>
+                    <th>Category Name</th>
+                    <th>Update</th>
+                    <th>Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% for (let i= 0; i < data.length;i++) { %>
+                <tr>
+                    <td><%= (i+1) %></td>
+                    <td><%= data[i].CID %></td>
+                    <td><%= data[i].CName %></td>
+                    <td><button><a href="#updateCategory"
+                                onclick='update(<%= data[i].CID%> ,"<%=data[i].CName %>")'>Update</a></button></td>
+                    <td><button><a href="/delete-Category?cId=<%= data[i].CID%>">Delete</a></button></td>
+                </tr>
+                <% } %>
+            </tbody>
+        </table>
+    </center>
+    <% } else { %>
+    <h1>No data Found</h1>
+    <% } %>
+
+    <div id="addCategory" class="overlay">
+        <div class="popup">
+            <h2>Add Category</h2>
+            <hr>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <form action="/add-category" method="POST" name="addCategory">
+                    <label for="cateogry Name">Category Name</label>
+                    <input type="text" name="categoryName" required>
+                    <button type="submit">Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="updateCategory" class="overlay">
+        <div class="popup">
+            <h2>Update Category</h2>
+            <hr>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+                <form action="/update-category" method="POST" name="addCategory">
+                    <label for="cateogry Name">Category Name</label>
+                    <input id='uCId' type="text" name="categoryId" style="display: none;" required>
+                    <input id="uCName" type="text" name="categoryName" required>
+                    <button type="submit">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        function update(id, name) {
+            document.getElementById("uCName").value = name;
+            document.getElementById("uCId").value = id;
+        }
+    </script>
+</body>
+
+</html>
